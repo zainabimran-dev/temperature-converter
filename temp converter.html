@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <!-- CSS styling -->
+    <style>
+        /* CSS section: The purpose of this styling is to create a simple, clean, and centered layout 
+        that visually resembles the sample in the assignment. 
+        Styling improves user experience but does not affect functionality. */
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+
+        /* 
+           Container to hold the entire converter UI.
+           Helps group elements visually and adds spacing + shadows for a card look.
+        */
+
+        .container {
+            background: white;
+            width: 350px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        /* Basic UI styling for input fields, dropdown box, and button */
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        /* Make the Convert button stand out */
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Result message styling */
+        #result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Error messages appear in red for clarity */
+        #error {
+            color: red;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML layout -->
+   <!-- 
+        Main converter section.
+        This contains the input, dropdown menu, button, and display areas.
+        It provides the full interactive interface to the user.
+    -->
+    <div class="container">
+        <h2>Temperature Converter</h2>
+
+        <!-- Input field for user temperature value -->
+        <input type="text" id="tempInput" placeholder="Enter temperature">
+
+        <!-- Dropdown for selecting conversion direction -->
+        <select id="conversionType">
+            <option value="CtoF">Celsius to Fahrenheit</option>
+            <option value="FtoC">Fahrenheit to Celsius</option>
+        </select>
+
+        <!-- Button that triggers conversion -->
+        <button id="convertBtn">Convert</button>
+
+        <!-- Area where converted result will appear -->
+        <p id="result"></p>
+ 
+        <!-- Area where error messages will show -->
+        <p id="error"></p>
+    </div>
+
+    <!-- 
+        JavaScript section:
+        This handles all dynamic behavior, including:
+        - user input validation
+        - temperature conversion
+        - updating the result on the screen
+        Event listeners and control structures ensure the app responds correctly.
+    -->
+    
+    <script>
+        // Conversion functions
+
+        /* 
+           Function: Converts Celsius to Fahrenheit.
+           Purpose: Encapsulates the formula so the main logic stays clean.
+        */
+        function celsiusToFahrenheit(c) {
+            return (9/5) * c + 32;
+        }
+
+        /* 
+           Function: Converts Fahrenheit to Celsius.
+           Purpose: Keeps conversion logic separate and reusable.
+        */
+        function fahrenheitToCelsius(f) {
+            return (5/9) * (f - 32);
+        }
+
+        // Event listener for convert button
+        /* 
+           Purpose: Respond when the user clicks the Convert button.
+           This ensures the conversion happens only when the user requests it.
+        */
+        document.getElementById("convertBtn").addEventListener("click", function() {
+
+            // Get values from input and dropdown
+            let input = document.getElementById("tempInput").value;
+            let type = document.getElementById("conversionType").value;
+            let result = document.getElementById("result");
+            let error = document.getElementById("error");
+
+            // Clear previous messages
+            result.textContent = "";
+            error.textContent = "";
+
+            // Validate input
+            /* 
+               Input validation using control structure (if statement):
+               Ensures the user enters a number.
+               Prevents incorrect input from breaking the program.
+            */
+            if (isNaN(input) || input.trim() === "") {
+                error.textContent = "Please enter a valid number!";
+                return;
+            }
+
+            input = parseFloat(input);
+
+            // Control structure for conversion type
+            /* 
+               Determines which conversion formula to apply 
+               based on the user's dropdown selection.
+            */
+            if (type === "CtoF") {
+                let converted = celsiusToFahrenheit(input).toFixed(2);
+                result.textContent = `${input} °C is ${converted} °F`;
+            } else if (type === "FtoC") {
+                let converted = fahrenheitToCelsius(input).toFixed(2);
+                result.textContent = `${input} °F is ${converted} °C`;
+            }
+        });
+    </script>
+
+</body>
+</html>
